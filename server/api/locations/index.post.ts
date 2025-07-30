@@ -1,5 +1,5 @@
 import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
-
+import cloudinary from "cloudinary";
 import * as z from "zod";
 
 const bodySchema = z.object({
@@ -7,6 +7,7 @@ const bodySchema = z.object({
   tags: z.array(z.string()).max(10, "Maximum 10 tags allowed").optional(),
   latitude: z.number(),
   longitude: z.number(),
+  image: z.string(),
 });
 
 export default eventHandler(async (event) => {
@@ -19,12 +20,15 @@ export default eventHandler(async (event) => {
     });
   }
 
-  const { name, tags, longitude, latitude } = await readValidatedBody(
+  const { name, tags, longitude, latitude, image } = await readValidatedBody(
     event,
     bodySchema.parse,
   );
 
+  const cloudinaryResult = await cloudinary.v2.uploader.upload(image);
+  console.log("cloudinaryResult", cloudinaryResult);
   const supabase = await serverSupabaseClient(event);
+
   try {
     const { status } = await supabase.from("locations").insert([
       {
@@ -33,6 +37,7 @@ export default eventHandler(async (event) => {
         longitude,
         name,
         tags,
+        image_url: cloudinaryResult?.secure_url,
       },
     ]);
     if (status === 201) {

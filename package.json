@@ -17,6 +17,7 @@
     "@nuxtjs/supabase": "1.6.0",
     "@tailwindcss/vite": "^4.1.11",
     "@vueuse/core": "^13.6.0",
+    "cloudinary": "^2.7.0",
     "eslint": "^9.0.0",
     "nuxt": "^4.0.1",
     "tailwindcss": "^4.1.11",

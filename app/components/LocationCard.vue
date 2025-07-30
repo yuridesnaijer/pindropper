@@ -14,6 +14,8 @@ const directionsUrl = computed(() => {
     <template #header>
       {{ location.name }}
     </template>
+    <NuxtImg :src="location.image_url" class="w-full h-48 object-cover" />
+    {{ location }}
     <UBadge color="info" v-for="tag in location.tags">{{ tag }}</UBadge>
     <template #footer>
       <UButton :href="directionsUrl" target="_blank" rel="noopener noreferrer">

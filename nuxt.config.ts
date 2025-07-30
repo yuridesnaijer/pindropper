@@ -6,7 +6,8 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxt/image',
     '@nuxt/ui',
-    '@nuxtjs/leaflet'
+    '@nuxtjs/leaflet',
+    '@nuxtjs/supabase'
   ],
   css: ['~/assets/css/main.css']
 })

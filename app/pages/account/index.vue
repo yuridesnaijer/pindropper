@@ -2,7 +2,13 @@
 import { useGeolocation } from "@vueuse/core";
 
 const { coords } = useGeolocation();
-const { data } = useFetch("/api/locations");
+const { data, refresh } = useFetch("/api/locations");
+const isModalOpen = ref(false);
+
+const handleUploadSuccess = () => {
+  isModalOpen.value = false;
+  refresh();
+};
 </script>
 
 <template>
@@ -29,13 +35,20 @@ const { data } = useFetch("/api/locations");
         />
       </LMap>
     </ClientOnly>
-    <UModal title="Save your current location" :dismissible="false">
-      <div class="flex justify-center my-8">
-        <UButton label="Save this location" />
-      </div>
-
+    {{ isModalOpen }}
+    <div class="flex justify-center my-8">
+      <UButton @click="isModalOpen = true" label="Save this location" />
+    </div>
+    <UModal
+      v-model:open="isModalOpen"
+      title="Save your current location"
+      :dismissible="true"
+    >
       <template #body>
-        <SaveLocationForm :coords="coords" />
+        <SaveLocationForm
+          @upload-successful="handleUploadSuccess"
+          :coords="coords"
+        />
       </template>
     </UModal>
 

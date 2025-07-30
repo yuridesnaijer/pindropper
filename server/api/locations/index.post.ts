@@ -7,7 +7,7 @@ const bodySchema = z.object({
   tags: z.array(z.string()).max(10, "Maximum 10 tags allowed").optional(),
   latitude: z.number(),
   longitude: z.number(),
-  image: z.string(),
+  image: z.string().optional(),
 });
 
 export default eventHandler(async (event) => {
@@ -25,8 +25,10 @@ export default eventHandler(async (event) => {
     bodySchema.parse,
   );
 
-  const cloudinaryResult = await cloudinary.v2.uploader.upload(image);
-  console.log("cloudinaryResult", cloudinaryResult);
+  const cloudinaryResult = image
+    ? await cloudinary.v2.uploader.upload(image)
+    : undefined;
+
   const supabase = await serverSupabaseClient(event);
 
   try {

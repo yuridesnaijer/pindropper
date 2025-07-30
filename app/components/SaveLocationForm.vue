@@ -5,6 +5,10 @@ const { coords } = defineProps<{
   coords: { latitude: number; longitude: number };
 }>();
 
+const emit = defineEmits(["uploadSuccessful"]);
+
+const toast = useToast();
+
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   tags: z.array(z.string()).max(10, "Maximum 10 tags allowed"),
@@ -30,9 +34,6 @@ const setImage = (event: Event) => {
 };
 
 const handleFormSubmit = async () => {
-  // Handle form submission logic here
-  console.log("Form submitted with state:", state, coords);
-
   try {
     await $fetch("/api/locations", {
       method: "POST",
@@ -44,8 +45,20 @@ const handleFormSubmit = async () => {
         image: imageSrc.value,
       },
     });
+
+    toast.add({
+      title: "Success",
+      description: "Your location has been saved successfully.",
+      color: "success",
+    });
+
+    emit("uploadSuccessful");
   } catch (e) {
-    console.error("Error saving location:", e);
+    toast.add({
+      title: "Error",
+      description: "There was an error saving your location." + e,
+      color: "error",
+    });
   }
 };
 </script>

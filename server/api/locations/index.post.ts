@@ -39,13 +39,6 @@ export default eventHandler(async (event) => {
       return { message: "Location inserted successfully" };
     }
   } catch (error) {
-    throw createError({
-      statusCode: 500,
-      statusMessage: "Internal Server Error",
-      message:
-        error instanceof Error
-          ? error?.message
-          : "An unexpected error occurred.",
-    });
+    return error;
   }
 });

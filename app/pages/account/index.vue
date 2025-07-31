@@ -35,7 +35,6 @@ const handleUploadSuccess = () => {
         />
       </LMap>
     </ClientOnly>
-    {{ isModalOpen }}
     <div class="flex justify-center my-8">
       <UButton @click="isModalOpen = true" label="Save this location" />
     </div>

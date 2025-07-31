@@ -5,20 +5,27 @@ const { authRedirectUrl } = useRuntimeConfig().public;
 const supabase = useSupabaseClient();
 const schema = z.object({
   email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type Schema = z.output<typeof schema>;
-const state = reactive<Partial<Schema>>({
-  email: undefined,
+const OtpState = reactive<Partial<Schema>>({
+  email: "",
 });
+// TODO reuse in SignUpForm
+const state = reactive<Schema>({
+  email: "",
+  password: "",
+});
+
 const signInWithOtp = async () => {
-  if (!state.email) {
+  if (!OtpState.email) {
     console.log("Email is required");
     return;
   }
 
   const { error } = await supabase.auth.signInWithOtp({
-    email: state.email,
+    email: OtpState.email,
     options: {
       emailRedirectTo: authRedirectUrl,
     },
@@ -27,15 +34,18 @@ const signInWithOtp = async () => {
 };
 </script>
 <template>
-  <UContainer>
-    <div class="flex flex-col items-center justify-center h-screen">
-      {{ authRedirectUrl }}
-      <UForm :state="state" @submit="signInWithOtp">
-        <UFormField>
-          <UInput v-model="state.email" type="email" />
-        </UFormField>
-        <UButton type="submit"> Sign In with E-Mail </UButton>
-      </UForm>
-    </div>
+  <UContainer class="flex flex-col items-center justify-center">
+    <SignUpForm />
+  </UContainer>
+  <UContainer class="flex flex-col items-center justify-center mt-10">
+    <LoginForm />
+    <hr />
+    or use magic link
+    <UForm :state="OtpState" @submit="signInWithOtp">
+      <UFormField>
+        <UInput v-model="OtpState.email" type="email" />
+      </UFormField>
+      <UButton type="submit"> Sign In with E-Mail </UButton>
+    </UForm>
   </UContainer>
 </template>

@@ -3,5 +3,7 @@
 </script>
 
 <template>
-  welkom hier kan je plekken opslaan
+  <div>
+    welkom hier kan je plekken opslaan
+  </div>
 </template>

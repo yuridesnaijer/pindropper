@@ -10,16 +10,45 @@ const directionsUrl = computed(() => {
 </script>
 
 <template>
-  <UCard class="mb-4" :key="location.id">
+  <UCard
+    :ui="{
+      body: 'flex flex-col grow',
+    }"
+    class="flex flex-col h-full"
+    :key="location.id"
+  >
     <template #header>
       {{ location.name }}
     </template>
-    <NuxtImg :src="location.image_url" class="w-full h-48 object-cover" />
-    <UBadge color="info" v-for="tag in location.tags">{{ tag }}</UBadge>
+    <template #default class="grow">
+      <NuxtImg
+        v-if="location.image_url"
+        :src="location.image_url"
+        class="w-full h-48 object-cover"
+      />
+      <div>
+        <UBadge color="info" v-for="tag in location.tags">{{ tag }}</UBadge>
+      </div>
+    </template>
     <template #footer>
-      <UButton :href="directionsUrl" target="_blank" rel="noopener noreferrer">
-        Get Directions
-      </UButton>
+      <div class="flex justify-between items-center">
+        <UButton
+          variant="outline"
+          color="neutral"
+          :href="directionsUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Get Directions
+        </UButton>
+        <UButton
+          variant="outline"
+          color="error"
+          @click="$emit('delete', location.id)"
+        >
+          <UIcon name="material-symbols:delete-outline" size="16" />
+        </UButton>
+      </div>
     </template>
   </UCard>
 </template>

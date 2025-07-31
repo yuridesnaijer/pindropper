@@ -36,11 +36,15 @@ const handleUploadSuccess = () => {
       </LMap>
     </ClientOnly>
     <div class="flex justify-center my-8">
-      <UButton @click="isModalOpen = true" label="Save this location" />
+      <UButton
+        size="xl"
+        @click="isModalOpen = true"
+        label="Save your current location"
+      />
     </div>
     <UModal
       v-model:open="isModalOpen"
-      title="Save your current location"
+      title="Save this location"
       :dismissible="true"
     >
       <template #body>
@@ -51,6 +55,7 @@ const handleUploadSuccess = () => {
       </template>
     </UModal>
 
+    <h1 class="text-2xl mb-4 text-center">Your Locations</h1>
     <LocationList v-if="data?.locations" :locations="data.locations" />
   </UContainer>
 </template>

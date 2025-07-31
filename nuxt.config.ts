@@ -15,6 +15,7 @@ export default defineNuxtConfig({
       login: "/login",
       callback: "/confirm",
       include: ["/account(/*)?"],
+      exclude: ["/login", "/confirm", "/"],
     },
   },
   runtimeConfig: {

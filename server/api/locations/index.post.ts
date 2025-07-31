@@ -1,4 +1,4 @@
-import { serverSupabaseClient, serverSupabaseUser } from "#supabase/server";
+import { serverSupabaseClient } from "#supabase/server";
 import cloudinary from "cloudinary";
 import * as z from "zod";
 
@@ -11,15 +11,6 @@ const bodySchema = z.object({
 });
 
 export default eventHandler(async (event) => {
-  const user = await serverSupabaseUser(event);
-  if (!user) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: "Unauthorized",
-      message: "You must be logged in to access this resource.",
-    });
-  }
-
   const { name, tags, longitude, latitude, image } = await readValidatedBody(
     event,
     bodySchema.parse,
@@ -34,7 +25,7 @@ export default eventHandler(async (event) => {
   try {
     const { status } = await supabase.from("locations").insert([
       {
-        user_id: user.id,
+        user_id: event.context.user.id,
         latitude,
         longitude,
         name,

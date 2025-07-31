@@ -7,6 +7,13 @@ const { location } = defineProps<{ location: any }>();
 const directionsUrl = computed(() => {
   return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(coords.value.latitude)},${encodeURIComponent(coords.value.longitude)}&destination=${encodeURIComponent(location.latitude)},${encodeURIComponent(location.longitude)}&travelmode=driving`;
 });
+
+const deleteLocation = async (id: string) => {
+  await $fetch("api/locations/", {
+    method: "DELETE",
+    body: { id },
+  });
+};
 </script>
 
 <template>
@@ -44,7 +51,7 @@ const directionsUrl = computed(() => {
         <UButton
           variant="outline"
           color="error"
-          @click="$emit('delete', location.id)"
+          @click="() => deleteLocation(location.id)"
         >
           <UIcon name="material-symbols:delete-outline" size="16" />
         </UButton>

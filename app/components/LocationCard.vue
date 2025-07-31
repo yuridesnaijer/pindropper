@@ -2,18 +2,12 @@
 import { useGeolocation } from "@vueuse/core";
 
 const { coords } = useGeolocation();
-const { location } = defineProps<{ location: any }>();
+const { deleteLocation } = useLocations();
+const { location } = defineProps<{ location: TLocation }>();
 
 const directionsUrl = computed(() => {
   return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(coords.value.latitude)},${encodeURIComponent(coords.value.longitude)}&destination=${encodeURIComponent(location.latitude)},${encodeURIComponent(location.longitude)}&travelmode=driving`;
 });
-
-const deleteLocation = async (id: string) => {
-  await $fetch("api/locations/", {
-    method: "DELETE",
-    body: { id },
-  });
-};
 </script>
 
 <template>
@@ -29,8 +23,8 @@ const deleteLocation = async (id: string) => {
     </template>
     <template #default class="grow">
       <NuxtImg
-        v-if="location.image_url"
-        :src="location.image_url"
+        v-if="location.imageSrc"
+        :src="location.imageSrc"
         class="w-full h-48 object-cover"
       />
       <div>

@@ -2,6 +2,7 @@
 import * as z from "zod";
 
 const supabase = useSupabaseClient();
+const toast = useToast();
 const schema = z.object({
   email: z.email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -17,7 +18,11 @@ const signUp = async () => {
   try {
     await schema.parseAsync(state);
   } catch (error) {
-    console.log("Validation error:", error);
+    toast.add({
+      color: "error",
+      title: "Validation Error",
+      description: "Please check your input.",
+    });
     return;
   }
 
@@ -27,7 +32,11 @@ const signUp = async () => {
   });
 
   if (error) {
-    console.log("Sign up error:", error);
+    toast.add({
+      color: "error",
+      title: "Sign Up Failed",
+      description: error.message,
+    });
   }
 };
 </script>

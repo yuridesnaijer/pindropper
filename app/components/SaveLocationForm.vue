@@ -7,16 +7,16 @@ const { coords } = defineProps<{
 
 const emit = defineEmits(["uploadSuccessful"]);
 
-const toast = useToast();
+const { addLocation } = useLocations();
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
   tags: z.array(z.string()).max(10, "Maximum 10 tags allowed"),
 });
 
-type Schema = z.output<typeof schema>;
-const state = reactive<Partial<Schema>>({
-  name: undefined,
+export type TAddLocationSchema = z.output<typeof schema>;
+const state = reactive<TAddLocationSchema>({
+  name: "",
   tags: [],
 });
 
@@ -34,32 +34,15 @@ const setImage = (event: Event) => {
 };
 
 const handleFormSubmit = async () => {
-  try {
-    await $fetch("/api/locations", {
-      method: "POST",
-      body: {
-        name: state.name,
-        tags: state.tags,
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        image: imageSrc.value,
-      },
-    });
-
-    toast.add({
-      title: "Success",
-      description: "Your location has been saved successfully.",
-      color: "success",
-    });
-
-    emit("uploadSuccessful");
-  } catch (e) {
-    toast.add({
-      title: "Error",
-      description: "There was an error saving your location." + e,
-      color: "error",
-    });
-  }
+  await addLocation({
+    name: state.name,
+    tags: state.tags,
+    latitude: coords.latitude,
+    longitude: coords.longitude,
+    imageSrc: imageSrc.value,
+  });
+  //TODO: emit conditionally based on success or failure
+  emit("uploadSuccessful");
 };
 </script>
 

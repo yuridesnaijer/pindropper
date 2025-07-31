@@ -34,18 +34,20 @@ const signInWithOtp = async () => {
 };
 </script>
 <template>
-  <UContainer class="flex flex-col items-center justify-center">
-    <SignUpForm />
-  </UContainer>
-  <UContainer class="flex flex-col items-center justify-center mt-10">
-    <LoginForm />
-    <hr />
-    or use magic link
-    <UForm :state="OtpState" @submit="signInWithOtp">
-      <UFormField>
-        <UInput v-model="OtpState.email" type="email" />
-      </UFormField>
-      <UButton type="submit"> Sign In with E-Mail </UButton>
-    </UForm>
-  </UContainer>
+  <div>
+    <UContainer class="flex flex-col items-center justify-center">
+      <SignUpForm />
+    </UContainer>
+    <UContainer class="flex flex-col items-center justify-center mt-10">
+      <LoginForm />
+      <hr />
+      or use magic link
+      <UForm :state="OtpState" @submit="signInWithOtp">
+        <UFormField>
+          <UInput v-model="OtpState.email" type="email" />
+        </UFormField>
+        <UButton type="submit"> Sign In with E-Mail </UButton>
+      </UForm>
+    </UContainer>
+  </div>
 </template>

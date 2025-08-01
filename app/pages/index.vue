@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import Aurora from "~/components/vue-bits/Backgrounds/Aurora/Aurora.vue";
+
 const user = useSupabaseUser();
 </script>
 
 <template>
-  <UContainer>
+  <Aurora
+    :color-stops="['#fa2fa2', '#faf02f', '#73fa2f']"
+    :speed="0.25"
+    class="top-0 bottom-0 fixed z-0"
+  />
+  <UContainer class="z-10 relative">
     <div class="flex gap-8 justify-space-between items-center h-screen">
       <section class="grow justify-items-center">
         <NuxtImg
           class="rounded-2xl max-w-xl"
-          src="https://lh3.googleusercontent.com/hS0GhTeGOn0KjmKHAZH5REwGIw1lDtYru8xUQWPLKGX2OEU1IbsddcJnUKYrI9oQ57ax_WOFlCf3rRe8SIwnmoswi-mNYVoaNGZer2Po=rw-e365-nu-w1400-v1"
+          src="https://png.pngtree.com/png-clipart/20230206/ourmid/pngtree-mobile-phone-mockup-3-png-image_6584022.png"
         />
       </section>
       <section class="grow justify-items-center">

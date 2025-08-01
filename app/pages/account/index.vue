@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useGeolocation } from "@vueuse/core";
 
+const user = useSupabaseUser();
 const { coords } = useGeolocation();
 const { locations, fetchLocations } = useLocations();
 const isModalOpen = ref(false);
@@ -8,6 +9,21 @@ const isModalOpen = ref(false);
 const handleUploadSuccess = () => {
   isModalOpen.value = false;
 };
+
+const currentCoords = computed(() => {
+  const { longitude, latitude } = coords.value;
+
+  if (
+    !longitude ||
+    !latitude ||
+    latitude === Number.POSITIVE_INFINITY ||
+    longitude === Number.POSITIVE_INFINITY
+  ) {
+    return { longitude: 0, latitude: 0 };
+  }
+
+  return { longitude, latitude };
+});
 
 onMounted(() => {
   fetchLocations();
@@ -24,20 +40,24 @@ onMounted(() => {
       </div>
     </template>
     <UContainer v-else>
-      <ClientOnly>
-        <LMap
-          style="height: 350px"
-          :zoom="6"
-          :center="[coords.latitude, coords.longitude]"
-          :use-global-leaflet="false"
-        >
-          <LTileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&amp;copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-            layer-type="base"
-            name="OpenStreetMap"
-          />
-        </LMap>
+      <ClientOnly v-if="user">
+        <MapboxMap
+          :map-id="user.id"
+          style="position: relative; width: 100%; height: 350px"
+          :options="{
+            style: 'mapbox://styles/mapbox/standard',
+            config: {
+              basemap: {
+                lightPreset: 'dawn', //TODO: make this based off time of day
+                showPedestrianRoads: false,
+                show3dObjects: false,
+              },
+            },
+            pitch: 40,
+            center: [currentCoords.longitude, currentCoords.latitude],
+            zoom: 15,
+          }"
+        />
       </ClientOnly>
       <div class="flex justify-center my-8">
         <UButton

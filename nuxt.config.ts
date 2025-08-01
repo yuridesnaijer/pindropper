@@ -6,8 +6,8 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxt/image",
     "@nuxt/ui",
-    "@nuxtjs/leaflet",
     "@nuxtjs/supabase",
+    "nuxt-mapbox",
   ],
   css: ["~/assets/css/main.css"],
   supabase: {
@@ -17,6 +17,9 @@ export default defineNuxtConfig({
       include: ["/account(/*)?"],
       exclude: ["/login", "/confirm", "/"],
     },
+  },
+  mapbox: {
+    accessToken: process.env.MAPBOX_TOKEN,
   },
   runtimeConfig: {
     public: {

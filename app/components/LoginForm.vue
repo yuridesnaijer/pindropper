@@ -55,12 +55,17 @@ const signInWithPassword = async () => {
 
 <template>
   <UForm :state="state" @submit="signInWithPassword">
-    <UFormField>
-      <UInput v-model="state.email" type="email" />
+    <UFormField label="Email" help="We won't share your email." required>
+      <UInput size="xl" class="w-full" v-model="state.email" type="email" />
     </UFormField>
-    <UFormField>
-      <UInput v-model="state.password" type="password" />
+    <UFormField label="Password">
+      <UInput
+        size="xl"
+        class="w-full"
+        v-model="state.password"
+        type="password"
+      />
     </UFormField>
-    <UButton type="submit"> Sign In with E-Mail </UButton>
+    <UButton class="mt-4" type="submit"> Sign In </UButton>
   </UForm>
 </template>

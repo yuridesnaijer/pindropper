@@ -7,6 +7,8 @@ const { coords } = defineProps<{
 
 const emit = defineEmits(["uploadSuccessful"]);
 
+const awaitingFormSubmit = ref(false);
+
 const { addLocation } = useLocations();
 
 const schema = z.object({
@@ -34,6 +36,7 @@ const setImage = (event: Event) => {
 };
 
 const handleFormSubmit = async () => {
+  awaitingFormSubmit.value = true;
   await addLocation({
     name: state.name,
     tags: state.tags,
@@ -42,6 +45,7 @@ const handleFormSubmit = async () => {
     imageSrc: imageSrc.value,
   });
   //TODO: emit conditionally based on success or failure
+  awaitingFormSubmit.value = false;
   emit("uploadSuccessful");
 };
 </script>
@@ -70,7 +74,11 @@ const handleFormSubmit = async () => {
         <UInputTags v-model="state.tags" :max-length="10" />
       </UFormField>
 
-      <UButton type="submit" label="Save Location" />
+      <UButton
+        type="submit"
+        label="Save Location"
+        :loading="awaitingFormSubmit"
+      />
     </label>
   </UForm>
 </template>

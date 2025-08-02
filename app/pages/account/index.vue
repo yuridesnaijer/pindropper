@@ -43,7 +43,7 @@ onMounted(() => {
       <ClientOnly v-if="user">
         <MapboxMap
           :map-id="user.id"
-          style="position: relative; width: 100%; height: 350px"
+          style="position: relative; width: 100%; height: 30svh"
           :options="{
             style: 'mapbox://styles/mapbox/standard',
             config: {
@@ -59,13 +59,22 @@ onMounted(() => {
           }"
         />
       </ClientOnly>
-      <div class="flex justify-center my-8">
+
+      <h1 class="text-2xl mb-4 text-center">Your Locations</h1>
+      <LocationList v-if="locations" :locations="locations" />
+    </UContainer>
+
+    <footer
+      class="sticky bottom-0 bg-white dark:bg-gray-900 border-t border-muted py-4"
+    >
+      <UContainer class="flex justify-center">
         <UButton
           size="xl"
+          class="w-full max-w-md"
           @click="isModalOpen = true"
           label="Save your current location"
         />
-      </div>
+      </UContainer>
       <UModal
         v-model:open="isModalOpen"
         title="Save this location"
@@ -78,9 +87,6 @@ onMounted(() => {
           />
         </template>
       </UModal>
-
-      <h1 class="text-2xl mb-4 text-center">Your Locations</h1>
-      <LocationList v-if="locations" :locations="locations" />
-    </UContainer>
+    </footer>
   </div>
 </template>

@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      authRedirectUrl: undefined,
+      authRedirectUrl: "https://pindropper.netlify.app/confirm",
     },
   },
 });

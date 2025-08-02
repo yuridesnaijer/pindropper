@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import * as z from "zod";
 
+const router = useRouter();
 const supabase = useSupabaseClient();
 const toast = useToast();
 const schema = z.object({
@@ -37,18 +38,37 @@ const signUp = async () => {
       title: "Sign Up Failed",
       description: error.message,
     });
+  } else {
+    toast.add({
+      color: "success",
+      title: "Sign Up Successful",
+      description: "Please check your email for confirmation.",
+    });
+
+    router.push({ name: "account" });
   }
 };
 </script>
 
 <template>
-  <UForm :state>
+  <UForm class="flex flex-col gap-4" :state>
     <UFormField label="Email">
-      <UInput type="email" required v-model="state.email" />
+      <UInput
+        help="We won't share your email."
+        class="w-full"
+        type="email"
+        required
+        v-model="state.email"
+      />
     </UFormField>
     <UFormField label="Password">
-      <UInput type="password" required v-model="state.password" />
+      <UInput
+        class="w-full"
+        type="password"
+        required
+        v-model="state.password"
+      />
     </UFormField>
-    <UButton type="submit" @click="signUp"> Sign Up </UButton>
+    <UButton class="mt-4" type="submit" @click="signUp"> Sign Up </UButton>
   </UForm>
 </template>

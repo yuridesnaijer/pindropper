@@ -51,13 +51,19 @@ const handleFormSubmit = async () => {
 </script>
 
 <template>
-  <UForm :state :schema @submit="handleFormSubmit">
-    <label for="cameraFileInput">
-      <UButton>
-        <span>Open camera</span>
-      </UButton>
-
+  <UForm class="flex flex-col gap-4" :state :schema @submit="handleFormSubmit">
+    <UFormField size="xl" label="Name">
       <UInput
+        v-model="state.name"
+        type="text"
+        placeholder="Enter a name"
+        class="w-full"
+      />
+    </UFormField>
+    <UFormField size="xl" label="Take a photo">
+      <UInput
+        class="w-full"
+        size="xl"
         id="cameraFileInput"
         type="file"
         accept="image/*"
@@ -65,20 +71,18 @@ const handleFormSubmit = async () => {
         @change="setImage"
       />
       <NuxtImg :src="imageSrc" />
+    </UFormField>
 
-      <UFormField label="name">
-        <UInput v-model="state.name" type="text" placeholder="Enter a name" />
-      </UFormField>
+    <UFormField size="xl" label="Tags">
+      <UInputTags class="w-full" v-model="state.tags" :max-length="10" />
+    </UFormField>
 
-      <UFormField label="tags">
-        <UInputTags v-model="state.tags" :max-length="10" />
-      </UFormField>
-
-      <UButton
-        type="submit"
-        label="Save Location"
-        :loading="awaitingFormSubmit"
-      />
-    </label>
+    <UButton
+      type="submit"
+      class="w-full mt-4"
+      size="xl"
+      label="Save Location"
+      :loading="awaitingFormSubmit"
+    />
   </UForm>
 </template>
